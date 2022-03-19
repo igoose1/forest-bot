@@ -1,9 +1,8 @@
-import asyncio
 import datetime
 import functools
 import logging
 
-from telethon import TelegramClient, events
+from pyrogram import Client, errors, filters, types
 
 from . import (
     API_HASH,
@@ -15,74 +14,56 @@ from . import (
     THROTTLING_PERIOD,
     THROTTLING_RATE,
 )
-from .utils import Throttle, is_shout, nop
+from .utils import Throttle, is_shout
 
-__all__ = ("bot",)
+__all__ = ("app",)
 
 logger = logging.getLogger()
 sender_throttle = Throttle(THROTTLING_RATE, THROTTLING_PERIOD)
-bot = TelegramClient("bot", API_ID, API_HASH).start(bot_token=BOT_TOKEN)
+app = Client("bot", API_ID, API_HASH, bot_token=BOT_TOKEN)
 
 
-def in_forest(function):
-    @functools.wraps(function)
-    def wrapper(event):
-        if event.chat_id == FOREST_CHAT_ID:
-            return function(event)
-        logger.info("chatting in another group.")
-        return nop()
-
-    return wrapper
-
-
-async def punish_by_throttling(event):
-    logger.info("punishing %d", event.sender_id)
-    pin_event = await event.pin()
-    await pin_event.delete()
-    await bot.edit_permissions(
-        await event.get_chat(),
-        await event.get_sender(),
-        datetime.datetime.utcnow() + PUNISHMENT_DURATION,
-        send_messages=False,
-        send_media=False,
-        send_stickers=False,
-        send_gifs=False,
-        send_games=False,
-        send_inline=False,
-        embed_link_previews=False,
-        send_polls=False,
-        change_info=False,
-        invite_users=True,
-        pin_messages=False,
-    )
+def punish_by_throttling(client, message):
+    logger.info("punishing %d", message.from_user.id)
+    message.pin()
+    try:
+        client.restrict_chat_member(
+            message.chat.id,
+            message.from_user.id,
+            types.ChatPermissions(
+                can_send_messages=False,
+                can_change_info=False,
+                can_pin_messages=False,
+            ),
+            int((datetime.datetime.utcnow() + PUNISHMENT_DURATION).timestamp()),
+        )
+    except errors.exceptions.bad_request_400.UserAdminInvalid:
+        logger.warning("couldn't punish user (id=%d)", message.from_user.id)
 
 
 def sender_throttling(function):
     @functools.wraps(function)
-    def wrapper(event):
-        if getattr(event, "sender_id", None) is None or sender_throttle(
-            event.sender_id,
+    def wrapper(client, message):
+        if getattr(message, "from_user", None) and not sender_throttle(
+            message.from_user.id,
         ):
-            return function(event)
-        return asyncio.gather(
-            punish_by_throttling(event),
-            function(event),
-        )
+            punish_by_throttling(client, message)
+        return function(client, message)
 
     return wrapper
 
 
-@bot.on(events.NewMessage)
-@bot.on(events.MessageEdited)
-@bot.on(events.ChatAction)
-@in_forest
+@app.on_message(filters.all & filters.chat(FOREST_CHAT_ID))
 @sender_throttling
-async def ignore_new_message(event):
-    if not hasattr(event, "text") or event.media or not is_shout(event.text):
-        await event.delete()
-    raise events.StopPropagation
+def ignore_new_message(client, message):
+    if (
+        not hasattr(message, "text")
+        or message.media
+        or not is_shout(message.text)
+    ):
+        message.delete()
 
 
-@bot.on(events.NewMessage(pattern="/start"))
-async def start(event):
-    await event.reply(HELP_TEXT, link_preview=False)
+@app.on_message(filters.command("start"))
+def start(client, message):
+    message.reply(HELP_TEXT, quote=True, disable_web_page_preview=True)
