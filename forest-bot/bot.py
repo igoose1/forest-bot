@@ -3,7 +3,6 @@ import functools
 import logging
 
 from telethon import TelegramClient, events
-from text_unidecode import unidecode
 
 from . import (
     API_HASH,
@@ -15,7 +14,7 @@ from . import (
     THROTTLING_PERIOD,
     THROTTLING_RATE,
 )
-from .utils import Throttle, nop
+from .utils import Throttle, is_shout, nop
 
 __all__ = ("bot",)
 
@@ -65,21 +64,6 @@ def sender_throttling(function):
         return punish_by_throttling(event)
 
     return wrapper
-
-
-def is_shout(text: str) -> bool:
-    """Returns whether text looks like a shout.
-
-    It is if the follwing is true:
-
-        * text only consists of "A", "a" or whitespace after unicode decoding;
-        * whitespaces take less than a half space."""
-
-    decoded_text = unidecode(text).lower()
-    return (
-        all(map(lambda symbol: symbol in "a ", decoded_text))
-        and decoded_text.count(" ") / len(decoded_text) < 0.5
-    )
 
 
 @bot.on(events.NewMessage)

@@ -7,9 +7,26 @@ import sys
 import time
 import typing
 
+from text_unidecode import unidecode
+
 __all__ = ("Env",)
 
 logger = logging.getLogger()
+
+
+def is_shout(text: str) -> bool:
+    """Returns whether text looks like a shout.
+
+    It is if the follwing is true:
+
+        * text only consists of "A", "a" or whitespace after unicode decoding;
+        * whitespaces take less than a half space."""
+
+    decoded_text = unidecode(text).lower()
+    return (
+        all(map(lambda symbol: symbol in "a ", decoded_text))
+        and decoded_text.count(" ") / len(decoded_text) < 0.5
+    )
 
 
 async def nop():
