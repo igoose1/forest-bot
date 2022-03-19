@@ -73,9 +73,10 @@ async def is_shout(message) -> bool:
         * whitespaces take less than a half space."""
 
     decoded_text = unidecode(message.text).lower()
-    if not all(map(lambda symbol: symbol in "a ", decoded_text)):
-        return False
-    return decoded_text.count(" ") / len(decoded_text) < 0.5
+    return (
+        all(map(lambda symbol: symbol in "a ", decoded_text))
+        and decoded_text.count(" ") / len(decoded_text) < 0.5,
+    )
 
 
 @bot.on(events.NewMessage)
@@ -84,7 +85,7 @@ async def is_shout(message) -> bool:
 @in_forest
 @sender_throttling
 async def ignore_new_message(event):
-    if not hasattr(event, "text") or await is_shout(event):
+    if not hasattr(event, "text") or not await is_shout(event):
         await event.delete()
     raise events.StopPropagation
 
