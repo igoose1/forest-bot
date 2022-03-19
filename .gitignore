@@ -3,8 +3,8 @@ __pycache__/
 *.pyc
 
 # Telethon session file
-/*.session
-/*.session-journal
+*.session
+*.session-journal
 
 # Environment file
 .envfile
