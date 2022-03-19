@@ -65,10 +65,17 @@ def sender_throttling(function):
 
 
 async def is_shout(message) -> bool:
+    """Returns whether message looks like a shout.
+
+    It is if the follwing is true:
+
+        * text only consists of "A", "a" or whitespace after unicode decoding;
+        * whitespaces take less than a half space."""
+
     decoded_text = unidecode(message.text).lower()
-    return all(
-        map(lambda symbol: symbol == "a", decoded_text),
-    )
+    if not all(map(lambda symbol: symbol in "a ", decoded_text)):
+        return False
+    return decoded_text.count(" ") / len(decoded_text) < 0.5
 
 
 @bot.on(events.NewMessage)
