@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import functools
 import logging
@@ -36,7 +37,8 @@ def in_forest(function):
 
 async def punish_by_throttling(event):
     logger.info("punishing %d", event.sender_id)
-    await event.pin()
+    pin_event = await event.pin()
+    await pin_event.delete()
     await bot.edit_permissions(
         await event.get_chat(),
         await event.get_sender(),
@@ -62,7 +64,10 @@ def sender_throttling(function):
             event.sender_id,
         ):
             return function(event)
-        return punish_by_throttling(event)
+        return asyncio.gather(
+            punish_by_throttling(event),
+            function(event),
+        )
 
     return wrapper
 
