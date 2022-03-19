@@ -5,3 +5,6 @@ __pycache__/
 # Telethon session file
 /*.session
 /*.session-journal
+
+# Environment file
+.envfile
