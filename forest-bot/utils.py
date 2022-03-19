@@ -24,7 +24,8 @@ def is_shout(text: str) -> bool:
 
     decoded_text = unidecode(text).lower()
     return (
-        all(map(lambda symbol: symbol in "a ", decoded_text))
+        bool(decoded_text)
+        and all(map(lambda symbol: symbol in "a ", decoded_text))
         and len(decoded_text) == len(text)
         and decoded_text.count(" ") / len(decoded_text) < 0.5
     )

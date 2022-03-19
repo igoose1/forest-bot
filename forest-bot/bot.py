@@ -72,7 +72,7 @@ def sender_throttling(function):
 @in_forest
 @sender_throttling
 async def ignore_new_message(event):
-    if not hasattr(event, "text") or not is_shout(event.text):
+    if not hasattr(event, "text") or event.media or not is_shout(event.text):
         await event.delete()
     raise events.StopPropagation
 
