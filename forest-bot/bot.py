@@ -26,13 +26,14 @@ def in_forest(function):
     def wrapper(event):
         if event.chat_id == FOREST_CHAT_ID:
             return function(event)
+        logger.info("chatting in another group.")
         return nop()
 
     return wrapper
 
 
 async def punish_by_throttling(event):
-    logger.info("punish %d", event.sender_id)
+    logger.info("punishing %d", event.sender_id)
     await bot.edit_permissions(
         await event.get_chat(),
         await event.get_sender(),
@@ -54,7 +55,9 @@ async def punish_by_throttling(event):
 def sender_throttling(function):
     @functools.wraps(function)
     def wrapper(event):
-        if event.sender_id is None or sender_throttle(event.sender_id):
+        if getattr(event, "sender_id", None) is None or sender_throttle(
+            event.sender_id,
+        ):
             return function(event)
         return punish_by_throttling(event)
 
@@ -71,8 +74,8 @@ async def is_shout(message) -> bool:
 @bot.on(events.NewMessage)
 @bot.on(events.MessageEdited)
 @bot.on(events.ChatAction)
-@sender_throttling
 @in_forest
+@sender_throttling
 async def ignore_new_message(event):
     if hasattr(event, "text") and await is_shout(event):
         return
