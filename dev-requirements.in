@@ -3,3 +3,5 @@
 black
 isort
 pre-commit
+flake8
+pyproject-flake8

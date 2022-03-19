@@ -4,3 +4,7 @@ target-version = ["py310"]
 
 [tool.isort]
 profile = "black"
+
+[tool.flake8]
+max-line-length = 80
+max-complexity = 4
