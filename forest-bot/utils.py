@@ -60,7 +60,7 @@ class VersionInfo:
     micro: int
 
     def __str__(self) -> str:
-        return f"{self.major}.{self.minor}.{self.micro}"
+        return f"v{self.major}.{self.minor}.{self.micro}"
 
 
 class Throttle:

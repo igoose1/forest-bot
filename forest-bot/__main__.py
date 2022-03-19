@@ -9,7 +9,7 @@ logger = logging.getLogger("forest-bot")
 
 
 def run() -> None:
-    logger.info("version: %s", __version__)
+    logger.info("%s", __version__)
     bot.run_until_disconnected()
 
 
