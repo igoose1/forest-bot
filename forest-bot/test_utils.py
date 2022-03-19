@@ -10,6 +10,7 @@ from .utils import Env, VersionInfo, is_shout
         ("not shout", False),
         ("αααααααα AA Аа", True),  # last "Аа" is cyrillic
         (" A A ", False),
+        ("😳😳😳", False),
     ],
 )
 def test_is_shout(text, expected):
