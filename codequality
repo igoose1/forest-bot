@@ -1,0 +1,7 @@
+#!/bin/sh
+
+TO_CHECK="forest-bot"
+
+black -q --check "$TO_CHECK"
+isort -q --check "$TO_CHECK"
+flake8 -q "$TO_CHECK"
