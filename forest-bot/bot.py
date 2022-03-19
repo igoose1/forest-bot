@@ -1,11 +1,10 @@
 import functools
 import logging
 
-from telethon import TelegramClient, events
+from telethon import events
 from text_unidecode import unidecode
 
 from . import FOREST_CHAT_ID, HELP_TEXT, bot
-from .utils import Env
 
 __all__ = ()
 

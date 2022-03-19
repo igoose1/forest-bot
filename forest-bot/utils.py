@@ -1,4 +1,5 @@
 import copy
+import dataclasses
 import logging
 import os
 import sys
@@ -42,3 +43,13 @@ class Env:
                 variable_name,
                 value,
             )
+
+
+@dataclasses.dataclass
+class VersionInfo:
+    major: int
+    minor: int
+    micro: int
+
+    def __str__(self) -> str:
+        return f"{self.major}.{self.minor}.{self.micro}"

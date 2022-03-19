@@ -2,13 +2,12 @@ import logging
 
 from telethon import TelegramClient
 
-from .utils import Env
+from .utils import Env, VersionInfo
 
-__all__ = ("FOREST_CHAT_ID", "bot", "version")
+__all__ = ("FOREST_CHAT_ID", "bot", "__version__")
 
+__version__ = VersionInfo(0, 0, 2)
 logging.basicConfig(level=logging.INFO)
-
-__version__ = (0, 0, 1)
 
 env = Env()
 API_ID = env.int("API_ID")
