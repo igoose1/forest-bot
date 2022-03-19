@@ -18,7 +18,7 @@ BOT_TOKEN = env("BOT_TOKEN")
 FOREST_CHAT_ID = env.int("FOREST_CHAT_ID")
 bot = TelegramClient("bot", API_ID, API_HASH).start(bot_token=BOT_TOKEN)
 
-HELP_TEXT = f"""Uncommon beauty is commonly overlooked.
+HELP_TEXT = f"""Everything will be fine.
 
 forest-bot: {__version__}"""
 
