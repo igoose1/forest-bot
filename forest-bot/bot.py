@@ -2,23 +2,26 @@ import datetime
 import functools
 import logging
 
-from telethon import events
+from telethon import TelegramClient, events
 from text_unidecode import unidecode
 
 from . import (
+    API_HASH,
+    API_ID,
+    BOT_TOKEN,
     FOREST_CHAT_ID,
     HELP_TEXT,
     PUNISHMENT_DURATION,
     THROTTLING_PERIOD,
     THROTTLING_RATE,
-    bot,
 )
 from .utils import Throttle, nop
 
-__all__ = ()
+__all__ = ("bot",)
 
 logger = logging.getLogger()
 sender_throttle = Throttle(THROTTLING_RATE, THROTTLING_PERIOD)
+bot = TelegramClient("bot", API_ID, API_HASH).start(bot_token=BOT_TOKEN)
 
 
 def in_forest(function):
