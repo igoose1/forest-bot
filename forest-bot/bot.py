@@ -84,9 +84,8 @@ async def is_shout(message) -> bool:
 @in_forest
 @sender_throttling
 async def ignore_new_message(event):
-    if hasattr(event, "text") and await is_shout(event):
-        return
-    await event.delete()
+    if not hasattr(event, "text") or await is_shout(event):
+        await event.delete()
     raise events.StopPropagation
 
 
