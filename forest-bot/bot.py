@@ -64,18 +64,18 @@ def sender_throttling(function):
     return wrapper
 
 
-async def is_shout(message) -> bool:
-    """Returns whether message looks like a shout.
+def is_shout(text: str) -> bool:
+    """Returns whether text looks like a shout.
 
     It is if the follwing is true:
 
         * text only consists of "A", "a" or whitespace after unicode decoding;
         * whitespaces take less than a half space."""
 
-    decoded_text = unidecode(message.text).lower()
+    decoded_text = unidecode(text).lower()
     return (
         all(map(lambda symbol: symbol in "a ", decoded_text))
-        and decoded_text.count(" ") / len(decoded_text) < 0.5,
+        and decoded_text.count(" ") / len(decoded_text) < 0.5
     )
 
 
@@ -85,7 +85,7 @@ async def is_shout(message) -> bool:
 @in_forest
 @sender_throttling
 async def ignore_new_message(event):
-    if not hasattr(event, "text") or not await is_shout(event):
+    if not hasattr(event, "text") or not is_shout(event.text):
         await event.delete()
     raise events.StopPropagation
 
