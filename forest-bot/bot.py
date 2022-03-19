@@ -37,8 +37,7 @@ def in_forest(function):
 
 async def punish_by_throttling(event):
     logger.info("punishing %d", event.sender_id)
-    pin_event = await event.pin()
-    await pin_event.delete()
+    await (await event.pin()).delete()
     await bot.edit_permissions(
         await event.get_chat(),
         await event.get_sender(),
