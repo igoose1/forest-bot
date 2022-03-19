@@ -13,15 +13,15 @@ logger = logging.getLogger()
 class Fail:
     """Empty class indicates it's necessary to fail."""
 
-    pass
-
 
 class Env:
     def __init__(self):
         self.envs = copy.copy(os.environ)
 
     def __call__(
-        self, variable_name: str, default: str | Fail = Fail
+        self,
+        variable_name: str,
+        default: str | Fail = Fail,
     ) -> str | typing.NoReturn:
         """Returns environment variable, default or exits with status code 7 if
         default is Fail."""
@@ -32,7 +32,9 @@ class Env:
         return value
 
     def int(
-        self, variable_name: str, default: int | Fail = Fail
+        self,
+        variable_name: str,
+        default: int | Fail = Fail,
     ) -> int | typing.NoReturn:
         value = self(variable_name, default)
         try:

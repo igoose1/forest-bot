@@ -8,3 +8,4 @@ profile = "black"
 [tool.flake8]
 max-line-length = 80
 max-complexity = 4
+inline-quotes = "double"

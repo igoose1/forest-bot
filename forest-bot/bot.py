@@ -26,10 +26,9 @@ def in_forest(function):
 
 async def is_shout(message) -> bool:
     decoded_text = unidecode(message.text).lower()
-    is_every_symbol_a_shout = all(
-        map(lambda symbol: symbol == "a", decoded_text)
+    return all(
+        map(lambda symbol: symbol == "a", decoded_text),
     )
-    return is_every_symbol_a_shout
 
 
 @bot.on(events.NewMessage)
