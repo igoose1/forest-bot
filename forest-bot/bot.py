@@ -1,25 +1,62 @@
+import datetime
 import functools
 import logging
 
 from telethon import events
 from text_unidecode import unidecode
 
-from . import FOREST_CHAT_ID, HELP_TEXT, bot
+from . import (
+    FOREST_CHAT_ID,
+    HELP_TEXT,
+    PUNISHMENT_DURATION,
+    THROTTLING_PERIOD,
+    THROTTLING_RATE,
+    bot,
+)
+from .utils import Throttle, nop
 
 __all__ = ()
 
 logger = logging.getLogger()
+sender_throttle = Throttle(THROTTLING_RATE, THROTTLING_PERIOD)
 
 
 def in_forest(function):
-    async def nop():
-        pass
-
     @functools.wraps(function)
     def wrapper(event):
         if event.chat_id == FOREST_CHAT_ID:
             return function(event)
         return nop()
+
+    return wrapper
+
+
+async def punish_by_throttling(event):
+    logger.info("punish %d", event.sender_id)
+    await bot.edit_permissions(
+        await event.get_chat(),
+        await event.get_sender(),
+        datetime.datetime.utcnow() + PUNISHMENT_DURATION,
+        send_messages=False,
+        send_media=False,
+        send_stickers=False,
+        send_gifs=False,
+        send_games=False,
+        send_inline=False,
+        embed_link_previews=False,
+        send_polls=False,
+        change_info=False,
+        invite_users=True,
+        pin_messages=False,
+    )
+
+
+def sender_throttling(function):
+    @functools.wraps(function)
+    def wrapper(event):
+        if sender_throttle(event.sender_id):
+            return function(event)
+        return punish_by_throttling(event)
 
     return wrapper
 
@@ -34,6 +71,7 @@ async def is_shout(message) -> bool:
 @bot.on(events.NewMessage)
 @bot.on(events.MessageEdited)
 @bot.on(events.ChatAction)
+@sender_throttling
 @in_forest
 async def ignore_new_message(event):
     if hasattr(event, "text") and await is_shout(event):
