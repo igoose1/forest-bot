@@ -1,7 +1,10 @@
 #!/bin/sh
 
+set -eufx
+
 TO_CHECK="forest-bot"
 
-black -q --check "$TO_CHECK"
-isort -q --check "$TO_CHECK"
-flake8 -q "$TO_CHECK"
+black --check "$TO_CHECK"
+isort --check "$TO_CHECK"
+flake8 "$TO_CHECK"
+python -m pytest -v --import-mode=importlib "$TO_CHECK"

@@ -21,6 +21,8 @@ class Fail:
 
 
 class Env:
+    fail_status_code = 7
+
     def __init__(self):
         self.envs = copy.copy(os.environ)
 
@@ -34,7 +36,7 @@ class Env:
 
         if (value := self.envs.get(variable_name, default)) is Fail:
             logger.error("variable %s wasn't set.", variable_name)
-            sys.exit(7)
+            sys.exit(self.fail_status_code)
         return value
 
     def int(
@@ -51,6 +53,7 @@ class Env:
                 variable_name,
                 value,
             )
+            sys.exit(self.fail_status_code)
 
 
 @dataclasses.dataclass

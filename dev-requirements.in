@@ -25,3 +25,5 @@ flake8-simplify
 flake8-todo
 flake8-variables-names
 flake8-use-fstring
+
+pytest
