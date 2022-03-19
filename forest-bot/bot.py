@@ -79,4 +79,4 @@ async def ignore_new_message(event):
 
 @bot.on(events.NewMessage(pattern="/start"))
 async def start(event):
-    await event.reply(HELP_TEXT)
+    await event.reply(HELP_TEXT, link_preview=False)
