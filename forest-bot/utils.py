@@ -74,6 +74,22 @@ class Env:
             )
             sys.exit(self.fail_status_code)
 
+    def float(
+        self,
+        variable_name: str,
+        default: float | Fail = Fail,
+    ) -> int | typing.NoReturn:
+        value = self(variable_name, default)
+        try:
+            return float(value)
+        except ValueError:
+            logger.error(
+                "variable %s(=%s) can't be casted to float.",
+                variable_name,
+                value,
+            )
+            sys.exit(self.fail_status_code)
+
 
 @dataclasses.dataclass
 class VersionInfo:

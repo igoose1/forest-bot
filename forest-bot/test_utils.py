@@ -48,8 +48,9 @@ def test_env_with_default(patched_env):
     assert patched_env("REMOVED", "DEFAULT") == "DEFAULT"
 
 
-def test_env_with_int_casting(patched_env):
+def test_env_with_number_casting(patched_env):
     assert isinstance(patched_env.int("ADDED_INT"), int)
+    assert isinstance(patched_env.float("ADDED_INT"), float)
     with pytest.raises(SystemExit) as e:
         patched_env.int("ADDED")
     assert e.type == SystemExit

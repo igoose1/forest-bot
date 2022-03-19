@@ -20,5 +20,5 @@ HELP_TEXT = f"""Everything will be fine.
 [forest-bot](https://github.com/igoose1/forest-bot): {__version__}"""
 
 PUNISHMENT_DURATION = datetime.timedelta(minutes=30)
-THROTTLING_RATE = 180
-THROTTLING_PERIOD = 60.0
+THROTTLING_RATE = env.int("THROTTLING_RATE", 180)
+THROTTLING_PERIOD = env.float("THROTTLING_PERIOD", 60.0)
