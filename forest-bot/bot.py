@@ -54,7 +54,7 @@ async def punish_by_throttling(event):
 def sender_throttling(function):
     @functools.wraps(function)
     def wrapper(event):
-        if sender_throttle(event.sender_id):
+        if event.sender_id is None or sender_throttle(event.sender_id):
             return function(event)
         return punish_by_throttling(event)
 
