@@ -23,7 +23,7 @@ sender_throttle = Throttle(THROTTLING_RATE, THROTTLING_PERIOD)
 app = Client("bot", API_ID, API_HASH, bot_token=BOT_TOKEN)
 
 
-def punish_by_throttling(client, message):
+def punish_by_throttling(client, message: types.Message):
     logger.info("punishing %d", message.from_user.id)
     message.pin().delete()
     try:
@@ -55,15 +55,15 @@ def sender_throttling(function):
 
 @app.on_message(filters.chat(FOREST_CHAT_ID))
 @sender_throttling
-def ignore_new_message(client, message):
+def ignore_new_message(client, message: types.Message):
     if (
         not getattr(message, "text", None)
         or message.media
-        or not is_shout(message.text)
+        or not is_shout(message.text.markdown)
     ):
         message.delete()
 
 
 @app.on_message(filters.command("start"))
-def start(client, message):
+def start(client, message: types.Message):
     message.reply(HELP_TEXT, quote=True, disable_web_page_preview=True)
