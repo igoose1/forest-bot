@@ -57,7 +57,7 @@ def sender_throttling(function):
 @sender_throttling
 def ignore_new_message(client, message):
     if (
-        not hasattr(message, "text")
+        not getattr(message, "text", None)
         or message.media
         or not is_shout(message.text)
     ):
