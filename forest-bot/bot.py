@@ -53,7 +53,7 @@ def sender_throttling(function):
     return wrapper
 
 
-@app.on_message(filters.all & filters.chat(FOREST_CHAT_ID))
+@app.on_message(filters.chat(FOREST_CHAT_ID))
 @sender_throttling
 def ignore_new_message(client, message):
     if (
