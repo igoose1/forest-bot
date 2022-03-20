@@ -11,6 +11,7 @@ from . import (
     FOREST_CHAT_ID,
     HELP_TEXT,
     PUNISHMENT_DURATION,
+    STICKER_WHITELIST,
     THROTTLING_PERIOD,
     THROTTLING_RATE,
 )
@@ -56,6 +57,8 @@ def sender_throttling(function):
 @app.on_message(filters.chat(FOREST_CHAT_ID))
 @sender_throttling
 def filter_messages(client, message: types.Message):
+    if message.sticker and message.sticker.file_unique_id in STICKER_WHITELIST:
+        return
     if (
         not getattr(message, "text", None)
         or message.media
