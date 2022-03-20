@@ -2,7 +2,7 @@
 __pycache__/
 *.pyc
 
-# Telethon session file
+# Telethon/Pyrogram session file
 *.session
 *.session-journal
 
