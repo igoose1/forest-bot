@@ -55,7 +55,7 @@ def sender_throttling(function):
 
 @app.on_message(filters.chat(FOREST_CHAT_ID))
 @sender_throttling
-def ignore_new_message(client, message: types.Message):
+def filter_messages(client, message: types.Message):
     if (
         not getattr(message, "text", None)
         or message.media
