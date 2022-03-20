@@ -5,7 +5,7 @@ from .utils import Env, VersionInfo
 
 __all__ = ("FOREST_CHAT_ID", "bot", "__version__")
 
-__version__ = VersionInfo(2, 1, 0)
+__version__ = VersionInfo(2, 1, 1)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -19,11 +19,16 @@ HELP_TEXT = f"""Everything will be fine.
 
 [forest-bot](https://github.com/igoose1/forest-bot): {__version__}"""
 
-STICKER_WHITELIST = [
+STICKER_WHITELIST = {
     "AgADJQADaX7FLQ",
     "AgADBBUAAugL-Uo",
     "AgAD-wcAAlwCZQM",
-]
+    "AgAD3AsAAt8K6Uo",
+    "AgADDAsAAo0jmUs",
+    "AgADJgEAAiI3jgQ",
+    "AgADBBsAAqbjGEg",
+    "AgADMgUAAj-VzAo",
+}
 
 PUNISHMENT_DURATION = datetime.timedelta(minutes=30)
 THROTTLING_RATE = env.int("THROTTLING_RATE", 130)
