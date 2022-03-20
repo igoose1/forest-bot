@@ -29,6 +29,7 @@ STICKER_WHITELIST = {
     "AgADBBsAAqbjGEg",
     "AgADMgUAAj-VzAo",
     "AgADHQ0AAkz0uUo",
+    "AgAD3wADq1fECw",
 }
 
 PUNISHMENT_DURATION = datetime.timedelta(minutes=30)
