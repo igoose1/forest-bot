@@ -6,7 +6,7 @@
 #
 pyaes==1.6.1
     # via pyrogram
-pyrogram==1.4.8
+pyrogram==1.4.9
     # via -r requirements.in
 pysocks==1.7.1
     # via pyrogram

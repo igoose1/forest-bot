@@ -25,7 +25,7 @@ app = Client("bot", API_ID, API_HASH, bot_token=BOT_TOKEN)
 
 def punish_by_throttling(client, message):
     logger.info("punishing %d", message.from_user.id)
-    message.pin()
+    message.pin().delete()
     try:
         client.restrict_chat_member(
             message.chat.id,

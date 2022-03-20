@@ -10,7 +10,6 @@ logger = logging.getLogger("forest-bot")
 
 def run() -> None:
     logger.info("%s", __version__)
-    logger.warning("pinned update can't be removed yet.")
     app.run()
 
 
