@@ -11,6 +11,8 @@ from .utils import Env, VersionInfo, is_shout
         ("αααααααα AA Аа", True),  # last "Аа" is cyrillic
         (" A A ", False),
         ("😳😳😳", False),
+        ("A\nAA", True),
+        ("A\nA\n\nA", True),
     ],
 )
 def test_is_shout(text, expected):

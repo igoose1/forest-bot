@@ -9,7 +9,7 @@ import typing
 
 from text_unidecode import unidecode
 
-__all__ = ("Env",)
+__all__ = ("Env", "Throttle", "VersionInfo", "is_shout")
 
 logger = logging.getLogger()
 
@@ -17,17 +17,18 @@ logger = logging.getLogger()
 def is_shout(text: str) -> bool:
     """Returns whether text looks like a shout.
 
-    It is if the follwing is true:
+    It is if the following is true:
 
-        * text only consists of "A", "a" or whitespace after unicode decoding;
-        * whitespaces take less than a half space."""
+        * text only consists of "A", "a" or whitespaces and new lines after
+        unicode decoding;
+        * whitespaces and new lines take less or equal than a half space."""
 
     decoded_text = unidecode(text).lower()
     return (
         bool(decoded_text)
-        and all(map(lambda symbol: symbol in "a ", decoded_text))
+        and all(map(lambda symbol: symbol in "a \n", decoded_text))
         and len(decoded_text) == len(text)
-        and decoded_text.count(" ") / len(decoded_text) < 0.5
+        and decoded_text.count("a") / len(decoded_text) >= 0.5
     )
 
 
