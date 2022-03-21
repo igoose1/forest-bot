@@ -5,9 +5,16 @@ from .utils import Env, VersionInfo
 
 __all__ = ("FOREST_CHAT_ID", "bot", "__version__")
 
-__version__ = VersionInfo(2, 1, 3)
+__version__ = VersionInfo(2, 1, 4)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(f"{__name__}.log"),
+        logging.StreamHandler(),
+    ],
+)
 
 env = Env()
 API_ID = env.int("API_ID")

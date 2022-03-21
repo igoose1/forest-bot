@@ -8,3 +8,6 @@ __pycache__/
 
 # Environment file
 .envfile
+
+# forest-bot log file
+*.log

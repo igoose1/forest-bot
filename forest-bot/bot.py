@@ -19,13 +19,13 @@ from .utils import Throttle, is_shout
 
 __all__ = ("app",)
 
-logger = logging.getLogger()
+logger = logging.getLogger("forest-bot")
 sender_throttle = Throttle(THROTTLING_RATE, THROTTLING_PERIOD)
 app = Client("bot", API_ID, API_HASH, bot_token=BOT_TOKEN)
 
 
 def punish_by_throttling(client, message: types.Message):
-    logger.info("punishing %d", message.from_user.id)
+    logger.info("user (id=%d) was punished.", message.from_user.id)
     message.pin().delete()
     try:
         client.restrict_chat_member(
@@ -39,7 +39,7 @@ def punish_by_throttling(client, message: types.Message):
             int((datetime.datetime.now() + PUNISHMENT_DURATION).timestamp()),
         )
     except errors.exceptions.bad_request_400.UserAdminInvalid:
-        logger.warning("couldn't punish user (id=%d)", message.from_user.id)
+        logger.warning("user (id=%d) couldn't be banned.", message.from_user.id)
 
 
 def sender_throttling(function):
@@ -57,6 +57,7 @@ def sender_throttling(function):
 @app.on_message(filters.chat(FOREST_CHAT_ID))
 @sender_throttling
 def filter_messages(client, message: types.Message):
+    logger.info("new message was received (id=%d).", message.message_id)
     if message.sticker and message.sticker.file_unique_id in STICKER_WHITELIST:
         return
     if (
@@ -64,6 +65,7 @@ def filter_messages(client, message: types.Message):
         or message.media
         or not is_shout(message.text.markdown)
     ):
+        logger.info("message (id=%d) was deleted.", message.message_id)
         message.delete()
 
 

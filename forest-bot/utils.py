@@ -11,7 +11,7 @@ from text_unidecode import unidecode
 
 __all__ = ("Env", "Throttle", "VersionInfo", "is_shout")
 
-logger = logging.getLogger()
+logger = logging.getLogger("utils")
 
 
 def is_shout(text: str) -> bool:
