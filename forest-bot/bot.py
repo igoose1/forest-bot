@@ -36,7 +36,7 @@ def punish_by_throttling(client, message: types.Message):
                 can_change_info=False,
                 can_pin_messages=False,
             ),
-            int((datetime.datetime.utcnow() + PUNISHMENT_DURATION).timestamp()),
+            int((datetime.datetime.now() + PUNISHMENT_DURATION).timestamp()),
         )
     except errors.exceptions.bad_request_400.UserAdminInvalid:
         logger.warning("couldn't punish user (id=%d)", message.from_user.id)
