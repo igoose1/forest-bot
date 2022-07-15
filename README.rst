@@ -23,3 +23,9 @@ Run linter checks and tests
 * ``pip-sync requirements.txt dev-requirements.txt``
 
 * ``./codequality``
+
+See license
+===========
+
+Code is licensed under the Apache License. You may obtain a copy of the license
+at LICENSE file.
