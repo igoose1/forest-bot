@@ -19,7 +19,7 @@ from .utils import Env, VersionInfo
 
 __all__ = ("FOREST_CHAT_ID", "bot", "__version__")
 
-__version__ = VersionInfo(2, 1, 4)
+__version__ = VersionInfo(2, 2, 0)
 
 logging.basicConfig(
     level=logging.INFO,
