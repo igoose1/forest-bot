@@ -21,7 +21,7 @@ import sys
 import time
 import typing
 
-from text_unidecode import unidecode
+from unidecode import unidecode
 
 __all__ = ("Env", "Throttle", "VersionInfo", "is_shout")
 

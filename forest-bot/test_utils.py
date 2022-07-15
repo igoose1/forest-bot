@@ -27,6 +27,7 @@ from .utils import Env, VersionInfo, is_shout
         ("😳😳😳", False),
         ("A\nAA", True),
         ("A\nA\n\nA", True),
+        ("ₐ", True),
     ],
 )
 def test_is_shout(text, expected):
