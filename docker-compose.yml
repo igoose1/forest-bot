@@ -1,0 +1,10 @@
+version: "3.4"
+services:
+  forest-bot:
+    build: .
+    restart: always
+    environment:
+      - API_ID
+      - API_HASH
+      - BOT_TOKEN
+      - FOREST_CHAT_ID

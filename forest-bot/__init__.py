@@ -19,13 +19,12 @@ from .utils import Env, VersionInfo
 
 __all__ = ("FOREST_CHAT_ID", "bot", "__version__")
 
-__version__ = VersionInfo(2, 2, 0)
+__version__ = VersionInfo(2, 2, 1)
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(f"{__name__}.log"),
         logging.StreamHandler(),
     ],
 )
