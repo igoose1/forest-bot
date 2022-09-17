@@ -111,9 +111,13 @@ class VersionInfo:
     major: int
     minor: int
     micro: int
+    suffix: str = dataclasses.field(default="", init=False)
+
+    def set_debug(self) -> None:
+        self.suffix = "-dbg"
 
     def __str__(self) -> str:
-        return f"v{self.major}.{self.minor}.{self.micro}"
+        return f"v{self.major}.{self.minor}.{self.micro}{self.suffix}"
 
 
 class Throttle:

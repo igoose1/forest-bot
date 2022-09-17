@@ -34,6 +34,10 @@ API_ID = env.int("API_ID")
 API_HASH = env("API_HASH")
 BOT_TOKEN = env("BOT_TOKEN")
 FOREST_CHAT_ID = env.int("FOREST_CHAT_ID")
+IS_DEBUG = env.int("DEBUG", 0)
+
+if IS_DEBUG:
+    __version__.set_debug()
 
 HELP_TEXT = f"""Everything will be fine.
 
