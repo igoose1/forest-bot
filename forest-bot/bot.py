@@ -73,21 +73,25 @@ def sender_throttling(function):
 @sender_throttling
 def filter_messages(client, message: types.Message):
     logger.info("new message was received (id=%d).", message.message_id)
-    if message.sticker and (
+
+    by_sticker = message.sticker and (
         message.sticker.file_unique_id in STICKER_WHITELIST
         or message.sticker.set_name == STICKER_ALLOWED_SET_NAME
-    ):
+    )
+    by_text = (
+        getattr(message, "text", False)
+        and not message.media
+        and is_shout(message.text.markdown)
+    )
+    # early return if the message is ok.
+    if by_sticker or by_text:
         return
-    if (
-        not getattr(message, "text", None)
-        or message.media
-        or not is_shout(message.text.markdown)
-    ):
-        logger.info("message (id=%d) was deleted.", message.message_id)
-        try:
-            message.delete()
-        except errors.exceptions.forbidden_403.MessageDeleteForbidden:
-            logger.error("can't delete message (id=%d).", message.message_id)
+
+    logger.info("message (id=%d) was deleted.", message.message_id)
+    try:
+        message.delete()
+    except errors.exceptions.forbidden_403.MessageDeleteForbidden:
+        logger.error("can't delete message (id=%d).", message.message_id)
 
 
 @app.on_message(filters.command("start"))
