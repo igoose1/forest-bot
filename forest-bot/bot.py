@@ -80,7 +80,10 @@ def filter_messages(client, message: types.Message):
         or not is_shout(message.text.markdown)
     ):
         logger.info("message (id=%d) was deleted.", message.message_id)
-        message.delete()
+        try:
+            message.delete()
+        except errors.exceptions.forbidden_403.MessageDeleteForbidden:
+            logger.error("can't delete message (id=%d).", message.message_id)
 
 
 @app.on_message(filters.command("start"))
