@@ -19,7 +19,7 @@ from .utils import Env, VersionInfo
 
 __all__ = ("FOREST_CHAT_ID", "bot", "__version__")
 
-__version__ = VersionInfo(2, 2, 1)
+__version__ = VersionInfo(2, 2, 2)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -43,6 +43,7 @@ HELP_TEXT = f"""Everything will be fine.
 
 [forest-bot](https://github.com/igoose1/forest-bot): {__version__}"""
 
+STICKER_ALLOWED_SET_NAME = "imshouting_by_fStikBot"
 STICKER_WHITELIST = {
     "AgADJQADaX7FLQ",
     "AgADBBUAAugL-Uo",
