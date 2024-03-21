@@ -20,7 +20,7 @@ Don't want to mess with a Python dependency management? Then use Docker:
 
 Otherwise get ``API_ID`` and ``API_HASH`` from https://my.telegram.org/, ask
 `@BotFather <https://t.me/BotFather/>`_ for ``BOT_TOKEN``, find out
-``FOREST_CHAT_ID`` yourself and follow these steps with Python 3.10 installed:
+``FOREST_CHAT_ID`` yourself and follow these steps with Python 3.11 installed:
 
 * ``pip install pip-tools``
 

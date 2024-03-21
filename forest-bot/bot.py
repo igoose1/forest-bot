@@ -72,7 +72,7 @@ def sender_throttling(function):
 @app.on_message(filters.chat(FOREST_CHAT_ID))
 @sender_throttling
 def filter_messages(client, message: types.Message):
-    logger.info("new message was received (id=%d).", message.message_id)
+    logger.info("new message was received (id=%d).", message.id)
 
     by_sticker = message.sticker and (
         message.sticker.file_unique_id in STICKER_WHITELIST
@@ -87,11 +87,11 @@ def filter_messages(client, message: types.Message):
     if by_sticker or by_text:
         return
 
-    logger.info("message (id=%d) was deleted.", message.message_id)
+    logger.info("message (id=%d) was deleted.", message.id)
     try:
         message.delete()
     except errors.exceptions.forbidden_403.MessageDeleteForbidden:
-        logger.error("can't delete message (id=%d).", message.message_id)
+        logger.error("can't delete message (id=%d).", message.id)
 
 
 @app.on_message(filters.command("start"))
